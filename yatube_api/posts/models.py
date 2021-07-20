@@ -70,3 +70,16 @@ class Group(models.Model):
 
     class Meta:
         ordering = ('title', )
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING,
+                             related_name='follower')
+    following = models.ForeignKey(User, on_delete=models.DO_NOTHING,
+                               related_name='following')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'following'],
+                                    name='user_author_constraint')
+        ]
