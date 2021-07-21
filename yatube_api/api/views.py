@@ -1,6 +1,9 @@
 
 from django.shortcuts import get_object_or_404
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, filters, status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
+
 
 from posts.models import Comment, Group, Post, User, Follow
 
@@ -47,7 +50,22 @@ class UserViewSet(viewsets.ModelViewSet):
 class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('following__username',)
 
     def get_queryset(self):
         new_queryset = Follow.objects.filter(user=self.request.user)
         return new_queryset
+
+    def perform_create(self, serializer):
+        # serializer.save(user=self.request.user)
+        if serializer.is_valid():
+            # follow = UserSerializer(serializer.validated_data)
+            # serializer.save(user=self.request.user,
+            #                 following=follow)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # pass
+        # print(serializer.validated_data)
+    #     serializer.save(user=self.request.user)

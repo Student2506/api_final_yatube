@@ -40,9 +40,18 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = SlugRelatedField(slug_field='username', read_only=True)
+    user = SlugRelatedField(slug_field='username',
+                            read_only=True,
+                            default=serializers.CurrentUserDefault())
     following = SlugRelatedField(slug_field='username', read_only=True)
+    # followin = serializers.PrimaryKeyField()
 
     class Meta:
         fields = '__all__'
         model = Follow
+
+    def validate_following(self, value):
+        is_author = User.objects.filter(username=value).exist()
+        if not is_author:
+            raise serializers.ValidationError('Пользователь не существует!')
+        return value
