@@ -28,8 +28,8 @@ class Post(models.Model):
 
     def __str__(self):
         return (
-            self.text[:15] + ' ' + self.author.get_full_name()
-            + ' ' + self.pub_date.strftime('%d.%m.%Y') + ' ' + str(self.group)
+            f'{self.text[:15]} {self.author.get_full_name()} '
+            f'{self.pub_date.strftime("%d.%m.%Y")} {str(self.group)}'
         )
 
 
@@ -73,9 +73,9 @@ class Group(models.Model):
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING,
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='follower')
-    following = models.ForeignKey(User, on_delete=models.DO_NOTHING,
+    following = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name='following')
 
     class Meta:
