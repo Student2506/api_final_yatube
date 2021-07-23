@@ -6,3 +6,5 @@ pytest-django
 djangorestframework
 djangorestframework-simplejwt
 pillow
+django-filter
+djoser
