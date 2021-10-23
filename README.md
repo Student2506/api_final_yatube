@@ -48,4 +48,4 @@ python3 manage.py runserver
 
 ### Примеры запросов можно посмотреть в http://127.0.0.1:8000/redoc/
 
-Автор: t-do.ru/Student2506
+Автор: https://t.me/Student2506
